@@ -153,6 +153,8 @@ defmodule CouchDBEx.Worker do
         _from,
         state
       ) do
+    IO.puts("saving document with id #{id}")
+
     with {:ok, resp} <-
            HTTPClient.put(
              "#{state[:hostname]}:#{state[:port]}/#{database}/#{id}",
