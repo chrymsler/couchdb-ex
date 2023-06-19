@@ -154,7 +154,7 @@ defmodule CouchDBEx.Worker do
         state
       ) do
     with {:ok, resp} <-
-           HTTPClient.post(
+           HTTPClient.put(
              "#{state[:hostname]}:#{state[:port]}/#{database}/#{id}",
              Poison.encode!(document),
              [{"Content-Type", "application/json"}]
