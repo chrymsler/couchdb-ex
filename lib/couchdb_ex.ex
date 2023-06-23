@@ -157,6 +157,13 @@ defmodule CouchDBEx do
     do: GenServer.call(CouchDBEx.Worker, {:document_list, db, opts}, :infinity)
 
   @doc """
+  Check if a document exists or not
+  """
+  @spec document_exists?(id :: String.t(), db :: String.t()) :: couchdb_res
+  def document_exists?(id, db),
+    do: GenServer.call(CouchDBEx.Worker, {:document_exists, id, db})
+
+  @doc """
   Get a document from the database.
   
   ## Options

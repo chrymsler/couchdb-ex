@@ -232,6 +232,24 @@ defmodule CouchDBEx.Worker do
   end
 
   @impl true
+  def handle_call({:document_exists, id, database}, _from, state) do
+    with {:ok, resp} <-
+           HTTPClient.head("#{state[:hostname]}:#{state[:port]}/#{database}/#{id}"),
+         status_code <- resp.status_code do
+      response =
+        case status_code do
+          200 -> {:ok, true}
+          404 -> {:ok, false}
+          _ -> {:error, "Invalid response from document exists request"}
+        end
+
+      {:reply, response, state}
+    else
+      e -> {:reply, e, state}
+    end
+  end
+
+  @impl true
   def handle_call({:document_get, id, database, opts}, _from, state) do
     with {:ok, resp} <-
            HTTPClient.get(
